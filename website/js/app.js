@@ -268,7 +268,7 @@ function clearForm() {
 }
 
 // Add ONNX Runtime to the head of the document and ensure it's loaded
-let selectedModel = 'new_knn_classifier';
+let selectedModel = 'new_rf_classifier'; // Default to Random Forest as it typically performs best
 let session = null;
 
 // Function to load ONNX Runtime
@@ -305,6 +305,9 @@ function updateSelectedModel() {
 async function loadModel(modelName) {
     try {
         console.log('Loading model:', modelName);
+        // Models are stored in the Models/trained_models directory
+        // These are the enhanced models trained with balanced synthetic data
+        // and optimized parameters for better high fertility detection
         const modelPath = `../Models/trained_models/${modelName}.onnx`;
         console.log('Model path:', modelPath);
         

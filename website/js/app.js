@@ -305,31 +305,29 @@ function updateSelectedModel() {
 async function loadModel(modelName) {
     try {
         console.log('Loading model:', modelName);
-        // Models are stored in the Models/trained_models directory
-        // These are the enhanced models trained with balanced synthetic data
-        // and optimized parameters for better high fertility detection
-        const modelPath = `../Models/trained_models/${modelName}.onnx`;
+        // Use an absolute path from the root of your site
+        const modelPath = `/Models/trained_models/${modelName}.onnx`; 
         console.log('Model path:', modelPath);
-        
+
         const response = await fetch(modelPath);
         if (!response.ok) {
             throw new Error(`Failed to fetch model: ${response.status} ${response.statusText}`);
         }
-        
+
         const modelArrayBuffer = await response.arrayBuffer();
         console.log('Model buffer loaded, size:', modelArrayBuffer.byteLength);
-        
+
         console.log('Creating inference session...');
         session = await ort.InferenceSession.create(modelArrayBuffer, {
             executionProviders: ['wasm'],
             graphOptimizationLevel: 'all'
         });
-        
+
         // Log model information
         console.log('Model loaded successfully:', modelName);
         console.log('Model input names:', session.inputNames);
         console.log('Model output names:', session.outputNames);
-        
+
         session.modelPath = modelName; // Store the model name for reference
         return true;
     } catch (error) {
@@ -345,7 +343,8 @@ async function checkModelAvailability() {
 
     for (const option of modelSelect.options) {
         try {
-            const response = await fetch(`../Models/trained_models/${option.value}.onnx`, { method: 'HEAD' });
+            // Use the same absolute path here
+            const response = await fetch(`/Models/trained_models/${option.value}.onnx`, { method: 'HEAD' }); 
             if (!response.ok) {
                 option.textContent += ' (Not Available)';
                 option.disabled = true;
